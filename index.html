@@ -43,7 +43,6 @@
             gap: 15px;
         }
 
-        /* CUADRÍCULA 2x2 */
         .players-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -102,7 +101,6 @@
             margin-bottom: 5px;
         }
 
-        /* CONTADORES EXTRA DENTRO DE LA CARTA */
         .extra-counters {
             display: flex;
             justify-content: space-around;
@@ -120,13 +118,15 @@
             gap: 2px;
         }
 
+        /* AJUSTE DE CONTROLES SUPERIORES (DADO, JUGADORES, DÍA/NOCHE) */
         .player-controls {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            gap: 20px;
             font-weight: bold;
-            padding: 5px 0;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
         }
 
         .btn-trans {
@@ -134,16 +134,13 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
             border-radius: 5px;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .mana-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             background: rgba(0, 0, 0, 0.85);
             padding: 10px;
             border-radius: 20px;
@@ -154,8 +151,8 @@
         .mana-pool {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            flex-grow: 1;
+            gap: 8px;
+            width: 100%;
         }
 
         .mana-item {
@@ -173,35 +170,13 @@
             cursor: pointer;
         }
 
-        .mana-val {
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .w {
-            background: #f9faf4;
-        }
-
-        .u {
-            background: #0e68ab;
-        }
-
-        .b {
-            background: #151110;
-        }
-
-        .r {
-            background: #d32f2f;
-        }
-
-        .g {
-            background: #228b22;
-        }
-
-        .c {
-            background: #7f8c8d;
-        }
-
+        .mana-val { font-weight: bold; font-size: 12px; }
+        .w { background: #f9faf4; }
+        .u { background: #0e68ab; }
+        .b { background: #151110; }
+        .r { background: #d32f2f; }
+        .g { background: #228b22; }
+        .c { background: #7f8c8d; } /* Color Incoloro */
         .storm {
             background: #8e44ad;
             border: none;
@@ -215,7 +190,6 @@
         .side-icon {
             font-size: 22px;
             cursor: pointer;
-            width: 35px;
             text-align: center;
         }
 
@@ -241,67 +215,11 @@
             gap: 4px;
         }
 
-        .c1 {
-            background: #2d5a27;
-        }
-
-        .c2 {
-            background: #a03023;
-        }
-
-        .c3 {
-            background: #20547c;
-        }
-
-        .c4 {
-            background: #3d3d3d;
-        }
-
-        .c5 {
-            background: #b7950b;
-        }
-
-        .c6 {
-            background: #117a65;
-        }
-
-        .c7 {
-            background: #6c3483;
-        }
-
-        .c8 {
-            background: #a04000;
-        }
-
-        .c9 {
-            background: #2874a6;
-        }
-
-        .c10 {
-            background: #1e8449;
-        }
-
-        .c11 {
-            background: #922b21;
-        }
-
-        .c12 {
-            background: #d4ac0d;
-            color: black;
-            text-shadow: none;
-        }
-
-        .c13 {
-            background: #1a5276;
-        }
-
-        .c14 {
-            background: #7b241c;
-        }
-
-        .c15 {
-            background: #1d8348;
-        }
+        .c1 { background: #2d5a27; } .c2 { background: #a03023; } .c3 { background: #20547c; }
+        .c4 { background: #3d3d3d; } .c5 { background: #b7950b; } .c6 { background: #117a65; }
+        .c7 { background: #6c3483; } .c8 { background: #a04000; } .c9 { background: #2874a6; }
+        .c10 { background: #1e8449; } .c11 { background: #922b21; } .c12 { background: #d4ac0d; color: black; text-shadow: none; }
+        .c13 { background: #1a5276; } .c14 { background: #7b241c; } .c15 { background: #1d8348; }
 
         .reset-btn {
             background: #d4af37;
@@ -321,17 +239,9 @@
         }
 
         @keyframes parpadeo {
-            0% {
-                background: rgba(0, 0, 0, 0.85);
-            }
-
-            50% {
-                background: rgba(100, 0, 0, 0.7);
-            }
-
-            100% {
-                background: rgba(0, 0, 0, 0.85);
-            }
+            0% { background: rgba(0, 0, 0, 0.85); }
+            50% { background: rgba(100, 0, 0, 0.7); }
+            100% { background: rgba(0, 0, 0, 0.85); }
         }
 
         .monarca-active {
@@ -349,34 +259,25 @@
         <div class="players-container" id="player-area"></div>
 
         <div class="player-controls">
-            <button class="btn-trans" onclick="removePlayer()">-</button>
-            <span>JUGADORES</span>
-            <button class="btn-trans" onclick="addPlayer()">+</button>
+            <div class="side-icon" onclick="rollD20()">🎲</div>
+            <div>
+                <button class="btn-trans" onclick="removePlayer()">-</button>
+                <span style="font-size: 12px; margin: 0 10px;">JUGADORES</span>
+                <button class="btn-trans" onclick="addPlayer()">+</button>
+            </div>
+            <div class="side-icon" id="day-night-toggle" onclick="toggleDayNight()">☀️</div>
         </div>
 
         <div class="mana-section">
-            <div class="side-icon" onclick="rollD20()">🎲</div>
             <div class="mana-pool">
-                <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;">
-                    <div class="mana-btn w"></div><span class="mana-val" id="mw">0</span>
-                </div>
-                <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;">
-                    <div class="mana-btn u"></div><span class="mana-val" id="mu">0</span>
-                </div>
-                <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;">
-                    <div class="mana-btn b"></div><span class="mana-val" id="mb">0</span>
-                </div>
-                <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;">
-                    <div class="mana-btn r"></div><span class="mana-val" id="mr">0</span>
-                </div>
-                <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;">
-                    <div class="mana-btn g"></div><span class="mana-val" id="mg">0</span>
-                </div>
-                <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;">
-                    <div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span>
-                </div>
+                <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;"><div class="mana-btn w"></div><span class="mana-val" id="mw">0</span></div>
+                <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;"><div class="mana-btn u"></div><span class="mana-val" id="mu">0</span></div>
+                <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;"><div class="mana-btn b"></div><span class="mana-val" id="mb">0</span></div>
+                <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;"><div class="mana-btn r"></div><span class="mana-val" id="mr">0</span></div>
+                <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;"><div class="mana-btn g"></div><span class="mana-val" id="mg">0</span></div>
+                <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;"><div class="mana-btn c"></div><span class="mana-val" id="mc">0</span></div>
+                <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;"><div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span></div>
             </div>
-            <div class="side-icon" id="day-night-toggle" onclick="toggleDayNight()">☀️</div>
         </div>
 
         <div class="sound-grid">
@@ -432,18 +333,10 @@
         function updateName(i, val) { players[i].name = val.toUpperCase(); }
         function changeLife(i, v) {
             players[i].life += v;
-
-            // Elegimos el sonido según el valor
-            if (v === 10) {
-                play('plus10');
-            } else if (v === -10) {
-                play('minus10');
-            } else if (v > 0) {
-                play('plus1');
-            } else {
-                play('minus1');
-            }
-
+            if (v === 10) play('plus10');
+            else if (v === -10) play('minus10');
+            else if (v > 0) play('plus1');
+            else play('minus1');
             updateUI();
         }
 
@@ -463,21 +356,13 @@
         function changeMana(color, v) {
             mana[color] = Math.max(0, mana[color] + v);
             document.getElementById('m' + color).innerText = mana[color];
-
             if (v > 0) {
-                // Diccionario para convertir la letra en el nombre del archivo mp3
                 const sounds = {
-                    'w': 'mana_white',
-                    'u': 'mana_blue',
-                    'b': 'mana_black',
-                    'r': 'mana_red',
-                    'g': 'mana_green',
-                    'c': 'mana_colorless'
+                    'w': 'mana_white', 'u': 'mana_blue', 'b': 'mana_black', 
+                    'r': 'mana_red', 'g': 'mana_green', 'c': 'mana_colorless'
                 };
-                play(sounds[color]); // Reproduce, por ejemplo, mana_white.mp3
-            } else {
-                play('click'); // Sonido corto al restar maná
-            }
+                play(sounds[color]);
+            } else play('click');
         }
 
         function changeStorm(v) { storm = Math.max(0, storm + v); document.getElementById('st-val').innerText = storm; play('click'); }
@@ -486,9 +371,9 @@
         function addPlayer() { if (players.length < 4) { players.push({ name: "JUGADOR " + (players.length + 1), life: 40, cmd: 0, poison: 0, monarca: false }); updateUI(); } }
         function removePlayer() { if (players.length > 1) { players.pop(); updateUI(); } }
         function play(s) { new Audio(s + '.mp3').play().catch(() => { }); }
+        
         function resetGame() {
             if (confirm("¿Reiniciar?")) {
-                // Guardamos un aviso en el navegador antes de reiniciar
                 sessionStorage.setItem('playReset', 'true');
                 location.reload();
             }
@@ -498,11 +383,9 @@
         window.addEventListener('load', () => {
             if (sessionStorage.getItem('playReset') === 'true') {
                 play('reset');
-                // Borramos la nota para que no suene cada vez que entres a la web
                 sessionStorage.removeItem('playReset');
             }
         });
     </script>
 </body>
-
 </html>
