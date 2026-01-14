@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTG Simón Commander Pro</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        body {
+            background-color: #0d0d0d;
+            background-image: url('Fondo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: -1; }
+
+        /* JUGADORES */
+        /* JUGADORES: Ahora se adaptan al ancho del móvil */
+        .players-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 10px; 
+            width: 100%; 
+            max-width: 500px; 
+            margin-bottom: 15px; 
+        }
+
+        /* MANÁ Y DADO: Centrado total */
+        .mana-section {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            background: rgba(0,0,0,0.85); 
+            padding: 10px 5px; /* Reducido un poco para que quepa en móviles pequeños */
+            border-radius: 20px; 
+            margin-bottom: 15px; 
+            width: 100%; 
+            max-width: 500px; 
+            box-sizing: border-box;
+        }
+
+        /* AJUSTE PARA BOTONES DE SONIDO: Para que no se amontonen */
+        .sound-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+            width: 100%; 
+            max-width: 500px; 
+            margin-bottom: 15px; 
+            box-sizing: border-box;
+        }
+
+        /* ESTILO DE CARTA: Ajustamos el tamaño de fuente para que no desborde */
+        .player-card {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-sizing: border-box;
+        }
+        
+        .life-value { font-size: 48px; font-weight: bold; color: #d4af37; margin: 0 0 10px 0; display: block; }
+        .life-controls { display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; }
+        .btn-life { width: 42px; height: 35px; border-radius: 6px; border: none; font-weight: bold; font-size: 12px; cursor: pointer; background: #333; color: white; }
+        .player-name { font-size: 11px; text-transform: uppercase; color: #ccc; border: none; background: transparent; text-align: center; width: 100%; margin-bottom: 5px; }
+
+        /* ANIMACIÓN PELIGRO */
+        @keyframes parpadeo-rojo { 0% { background: rgba(0, 0, 0, 0.85); } 50% { background: rgba(150, 0, 0, 0.6); } 100% { background: rgba(0, 0, 0, 0.85); } }
+        .peligro { animation: parpadeo-rojo 1.5s infinite; border-color: #ff4444 !important; }
+        .monarca-active { border: 2px solid #d4af37; box-shadow: 0 0 15px #d4af37; }
+
+        /* CONTADORES EXTRA */
+        .extra-counters { display: flex; justify-content: space-around; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .counter-box { display: flex; flex-direction: column; align-items: center; font-size: 14px; cursor: pointer; user-select: none; }
+
+        /* CONTROL CENTRAL JUGADORES */
+        .player-controls { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-weight: bold; letter-spacing: 1px; }
+        .btn-trans { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 5px; width: 30px; height: 30px; cursor: pointer; font-size: 18px; line-height: 1; }
+
+        /* SECCIÓN MANÁ UNIFICADA CON DADO Y SOL/LUNA */
+        .mana-section {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0,0,0,0.85); padding: 10px 15px;
+            border-radius: 20px; margin-bottom: 15px; width: 100%; max-width: 470px;
+        }
+        .mana-pool { display: flex; justify-content: center; gap: 8px; }
+        .mana-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .mana-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #fff; cursor: pointer; }
+        .mana-val { font-weight: bold; font-size: 13px; }
+        .w { background: #f9faf4; } .u { background: #0e68ab; } .b { background: #151110; }
+        .r { background: #d32f2f; } .g { background: #228b22; } .c { background: #7f8c8d; }
+        .storm { background: #8e44ad; border: none; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+        /* ICONOS LATERALES (DADO Y DÍA/NOCHE) */
+        .side-icon { font-size: 24px; cursor: pointer; user-select: none; width: 40px; text-align: center; }
+
+        /* BOTONES SONIDO */
+        .sound-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
+        .btn-magic { display: flex; flex-direction: column; align-items: center; padding: 10px 2px; font-size: 10px; border-radius: 10px; border: none; color: white; cursor: pointer; font-weight: bold; text-shadow: 1px 1px 2px black; gap: 4px; }
+        
+        .c1 { background: #2d5a27; } .c2 { background: #a03023; } .c3 { background: #20547c; }
+        .c4 { background: #3d3d3d; } .c5 { background: #b7950b; } .c6 { background: #117a65; }
+        .c7 { background: #6c3483; } .c8 { background: #a04000; } .c9 { background: #2874a6; }
+        .c10 { background: #1e8449; } .c11 { background: #922b21; } .c12 { background: #d4ac0d; color: black; text-shadow: none; }
+        .c13 { background: #1a5276; } .c14 { background: #7b241c; } .c15 { background: #1d8348; }
+
+        .reset-btn { background: #d4af37; color: black; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; width: 100%; max-width: 500px; }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <h2 style="color: #d4af37; letter-spacing: 2px; margin-bottom: 10px;">MTG SIMÓN COMMANDER</h2>
+
+    <div class="players-container" id="player-area"></div>
+
+    <div class="player-controls">
+        <button class="btn-trans" onclick="removePlayer()">-</button>
+        <span>JUGADOR</span>
+        <button class="btn-trans" onclick="addPlayer()">+</button>
+    </div>
+
+    <div class="mana-section">
+        <div class="side-icon" onclick="rollD20()">🎲</div>
+        
+        <div class="mana-pool">
+            <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;"><div class="mana-btn w"></div><span class="mana-val" id="mw">0</span></div>
+            <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;"><div class="mana-btn u"></div><span class="mana-val" id="mu">0</span></div>
+            <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;"><div class="mana-btn b"></div><span class="mana-val" id="mb">0</span></div>
+            <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;"><div class="mana-btn r"></div><span class="mana-val" id="mr">0</span></div>
+            <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;"><div class="mana-btn g"></div><span class="mana-val" id="mg">0</span></div>
+            <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;"><div class="mana-btn c"></div><span class="mana-val" id="mc">0</span></div>
+            <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;"><div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span></div>
+        </div>
+
+        <div class="side-icon" id="day-night-toggle" onclick="toggleDayNight()">☀️</div>
+    </div>
+
+    <div class="sound-grid">
+        <button class="btn-magic c1" onclick="play('rugido')"><span>🦖</span> Criatura</button>
+        <button class="btn-magic c2" onclick="play('fuego')"><span>🔥</span> Fuego</button>
+        <button class="btn-magic c3" onclick="play('counter')"><span>⛔</span> Counter</button>
+        <button class="btn-magic c4" onclick="play('muerte')"><span>💀</span> Morir</button>
+        <button class="btn-magic c5" onclick="play('barremesas')"><span>✨</span> Barremesas</button>
+        <button class="btn-magic c6" onclick="play('proliferar')"><span>🧪</span> Proliferar</button>
+        <button class="btn-magic c7" onclick="play('cementerio')"><span>⚰️</span> Cementerio</button>
+        <button class="btn-magic c8" onclick="play('mano')"><span>🃏</span> Devolver</button>
+        <button class="btn-magic c9" onclick="play('buscar')"><span>🔍</span> Buscar</button>
+        <button class="btn-magic c10" onclick="play('lobos')"><span>🐺</span> Lobos</button>
+        <button class="btn-magic c11" onclick="play('turno')"><span>⏳</span> Turno</button>
+        <button class="btn-magic c12" onclick="play('curar')"><span>💖</span> Curar</button>
+        <button class="btn-magic c13" onclick="play('zombies')"><span>🧟</span> Zombies</button>
+        <button class="btn-magic c14" onclick="play('cry')"><span>😢</span> Cry</button>
+        <button class="btn-magic c15" onclick="play('barajar')"><span>🔄</span> Barajar</button>
+    </div>
+
+    <button class="reset-btn" onclick="resetGame()">REINICIAR PARTIDA</button>
+
+    <script>
+        let players = [
+            {name: "JUGADOR 1", life: 40, cmd: 0, poison: 0, monarca: false},
+            {name: "JUGADOR 2", life: 40, cmd: 0, poison: 0, monarca: false}
+        ];
+        let mana = {w:0, u:0, b:0, r:0, g:0, c:0};
+        let storm = 0;
+        let isDay = true;
+
+        function updateUI() {
+            const area = document.getElementById('player-area');
+            area.innerHTML = players.map((p, i) => {
+                const peligro = p.life <= 10 ? 'peligro' : '';
+                const monarca = p.monarca ? 'monarca-active' : '';
+                return `
+                <div class="player-card ${peligro} ${monarca}">
+                    <input class="player-name" value="${p.name}" onchange="updateName(${i}, this.value)">
+                    <span class="life-value">${p.life}</span>
+                    <div class="life-controls">
+                        <button class="btn-life" onclick="changeLife(${i},-10,'minus10')">-10</button>
+                        <button class="btn-life" onclick="changeLife(${i},-1,'minus1')">-1</button>
+                        <button class="btn-life" onclick="changeLife(${i},1,'plus1')">+1</button>
+                        <button class="btn-life" onclick="changeLife(${i},10,'plus10')">+10</button>
+                    </div>
+                    <div class="extra-counters">
+                        <div class="counter-box" onclick="changeExtra(${i},'cmd',1)" oncontextmenu="changeExtra(${i},'cmd',-1);return false;"><span>👑</span>${p.cmd}</div>
+                        <div class="counter-box" onclick="changeExtra(${i},'poison',1)" oncontextmenu="changeExtra(${i},'poison',-1);return false;"><span>☣️</span>${p.poison}</div>
+                        <div class="counter-box" onclick="setMonarca(${i})"><span>☀️</span></div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateName(i, val) { players[i].name = val.toUpperCase(); }
+        function changeLife(i, v, sound) { players[i].life += v; play(sound); updateUI(); }
+        function changeExtra(i, type, v) { 
+            if (v > 0) {
+                if (type === 'cmd') play('cmd');
+                else if (type === 'poison') play('poison');
+                else play('click');
+            } else {
+                play('click'); 
+            }
+
+            players[i][type] = Math.max(0, players[i][type] + v);
+            updateUI(); 
+        }
+        function toggleDayNight() {
+            isDay = !isDay;
+            const btn = document.getElementById('day-night-toggle');
+            
+            if (isDay) { 
+                btn.innerText = "☀️"; 
+                play('day'); // <--- Sonido para el día
+            } 
+            else { 
+                btn.innerText = "🌕"; 
+                play('night'); // <--- Sonido para la noche
+            }
+        }
+
+        function rollD20() {
+            play('d20');
+            const res = Math.floor(Math.random() * 20) + 1;
+            setTimeout(() => { alert("🎲 Resultado del dado: " + res); }, 100);
+        }
+
+        function setMonarca(i) {
+            let cur = players[i].monarca;
+            players.forEach(p => p.monarca = false);
+            players[i].monarca = !cur;
+            play('curar'); updateUI();
+        }
+
+        function changeMana(color, v) {
+            mana[color] = Math.max(0, mana[color] + v);
+            document.getElementById('m'+color).innerText = mana[color];
+
+            // Solo suena si estamos sumando maná
+            if (v > 0) {
+                switch(color) {
+                    case 'w': play('botonblanco'); break; // Blanco
+                    case 'u': play('botonazul');  break; // Azul
+                    case 'b': play('botonnegro'); break; // Negro
+                    case 'r': play('botonrojo');   break; // Rojo
+                    case 'g': play('botonverde'); break; // Verde
+                    case 'c': play('botongris'); break; // Incoloro
+                }
+            } else {
+                play('click'); // Sonido neutro al restar
+            }
+        }
+
+        function changeStorm(v) {
+            storm = Math.max(0, storm + v);
+            document.getElementById('st-val').innerText = storm;
+            play('click');
+        }
+
+        function resetGame() {
+            if (confirm("¿Estás seguro de que quieres reiniciar o te has tomado tres rubias?")) {
+                play('reset');
+                players.forEach(p => { p.life = 40; p.cmd = 0; p.poison = 0; p.monarca = false; });
+                mana = {w:0, u:0, b:0, r:0, g:0, c:0};
+                storm = 0; isDay = true;
+                document.getElementById('day-night-toggle').innerText = "☀️";
+                Object.keys(mana).forEach(c => document.getElementById('m'+c).innerText = '0');
+                document.getElementById('st-val').innerText = '0';
+                const starter = Math.floor(Math.random() * players.length);
+                setTimeout(() => { alert("¡Reiniciado! Empieza: " + players[starter].name); updateUI(); }, 100);
+            }
+        }
+
+        function addPlayer() { if(players.length < 4) { players.push({name: "JUGADOR " + (players.length + 1), life:40, cmd:0, poison:0, monarca:false}); updateUI(); } }
+        function removePlayer() { if(players.length > 1) { players.pop(); updateUI(); } }
+        function play(s) { new Audio(s + '.mp3').play().catch(e => {}); }
+
+        updateUI();
+    </script>
+</body>
+</html>
