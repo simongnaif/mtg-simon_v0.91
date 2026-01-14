@@ -26,13 +26,44 @@
 
         /* JUGADORES */
         /* JUGADORES: Ahora se adaptan al ancho del móvil */
+        /* JUGADORES: Cuadrícula inteligente 2x2 */
         .players-container { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            /* Esto fuerza 2 columnas de igual tamaño */
+            grid-template-columns: 1fr 1fr; 
             gap: 10px; 
             width: 100%; 
             max-width: 500px; 
             margin-bottom: 15px; 
+            box-sizing: border-box;
+        }
+
+        /* Ajuste para que las cartas no sean demasiado altas en el móvil */
+        .player-card {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 10px 5px; /* Reducimos padding lateral para ganar espacio */
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Reducimos un pelín el tamaño de la vida para que quepa bien en 2x2 */
+        .life-value { 
+            font-size: 38px; 
+            font-weight: bold; 
+            color: #d4af37; 
+            margin: 5px 0;
+        }
+
+        /* Botones de vida más compactos para la cuadrícula */
+        .btn-life { 
+            width: 35px; 
+            height: 30px; 
+            font-size: 10px; 
         }
 
         /* MANÁ Y DADO: Centrado total */
