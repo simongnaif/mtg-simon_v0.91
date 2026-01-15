@@ -248,10 +248,49 @@
             border: 2px solid #d4af37;
             box-shadow: 0 0 15px #d4af37;
         }
+
+        #custom-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 15, 15, 0.95);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 25px;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+            min-width: 250px;
+        }
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+        .modal-btn {
+            background: #d4af37;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn.cancel { background: #555; color: white; }
     </style>
 </head>
 
 <body>
+    <div id="modal-overlay"></div>
+    <div id="custom-modal">
+        <p id="modal-text" style="font-size: 18px; color: #d4af37; margin-bottom: 20px;"></p>
+        <div id="modal-buttons"></div>
+    </div>
     <div class="overlay"></div>
     <div class="main-container">
         <h2 style="color: #d4af37; text-align: center; letter-spacing: 2px; margin: 0;">MTG SIMÓN PRO</h2>
@@ -365,18 +404,63 @@
             } else play('click');
         }
 
+        function showModal(text, confirmMode = false, onConfirm = null) {
+            const modal = document.getElementById('custom-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const textEl = document.getElementById('modal-text');
+            const buttonsEl = document.getElementById('modal-buttons');
+
+            textEl.innerText = text;
+            buttonsEl.innerHTML = '';
+
+            if (confirmMode) {
+                const btnOk = document.createElement('button');
+                btnOk.className = 'modal-btn';
+                btnOk.innerText = 'SÍ, SEGURO';
+                btnOk.onclick = () => { overlay.style.display = modal.style.display = 'none'; onConfirm(); };
+                
+                const btnCancel = document.createElement('button');
+                btnCancel.className = 'modal-btn cancel';
+                btnCancel.innerText = 'NO';
+                btnCancel.onclick = () => { overlay.style.display = modal.style.display = 'none'; };
+                
+                buttonsEl.appendChild(btnCancel);
+                buttonsEl.appendChild(btnOk);
+            } else {
+                const btnClose = document.createElement('button');
+                btnClose.className = 'modal-btn';
+                btnClose.innerText = 'ACEPTAR';
+                btnClose.onclick = () => { overlay.style.display = modal.style.display = 'none'; };
+                buttonsEl.appendChild(btnClose);
+            }
+
+            overlay.style.display = 'block';
+            modal.style.display = 'block';
+        }
+
         function changeStorm(v) { storm = Math.max(0, storm + v); document.getElementById('st-val').innerText = storm; play('click'); }
-        function rollD20() { play('d20'); const res = Math.floor(Math.random() * 20) + 1; setTimeout(() => alert("Resultado: " + res), 100); }
+        function rollD20() {
+            play('d20');
+            const res = Math.floor(Math.random() * 20) + 1;
+            setTimeout(() => { showModal("🎲 El destino dice: " + res); }, 100);
+        }
         function setMonarca(i) { players.forEach((p, idx) => p.monarca = (idx === i && !p.monarca)); play('curar'); updateUI(); }
         function addPlayer() { if (players.length < 4) { players.push({ name: "JUGADOR " + (players.length + 1), life: 40, cmd: 0, poison: 0, monarca: false }); updateUI(); } }
         function removePlayer() { if (players.length > 1) { players.pop(); updateUI(); } }
         function play(s) { new Audio(s + '.mp3').play().catch(() => { }); }
         
         function resetGame() {
-            if (confirm("¿Reiniciar?")) {
-                sessionStorage.setItem('playReset', 'true');
-                location.reload();
-            }
+            showModal("¿Reiniciar partida, Simón? ¿O te has tomado demasiadas rubias?", true, () => {
+                play('reset');
+                players.forEach(p => { p.life = 40; p.cmd = 0; p.poison = 0; p.monarca = false; });
+                mana = {w:0, u:0, b:0, r:0, g:0, c:0};
+                storm = 0; isDay = true;
+                document.getElementById('day-night-toggle').innerText = "☀️";
+                Object.keys(mana).forEach(c => document.getElementById('m'+c).innerText = '0');
+                document.getElementById('st-val').innerText = '0';
+                const starter = Math.floor(Math.random() * players.length);
+                setTimeout(() => { showModal("¡Reiniciado! Empieza: " + players[starter].name); updateUI(); }, 300);
+            });
         }
 
         updateUI();
