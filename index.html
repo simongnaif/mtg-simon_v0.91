@@ -45,7 +45,7 @@
 
         .players-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 10px;
             width: 100%;
         }
@@ -60,6 +60,10 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .overlay {
+            pointer-events: none;
         }
 
         .life-value {
@@ -170,13 +174,36 @@
             cursor: pointer;
         }
 
-        .mana-val { font-weight: bold; font-size: 12px; }
-        .w { background: #f9faf4; }
-        .u { background: #0e68ab; }
-        .b { background: #151110; }
-        .r { background: #d32f2f; }
-        .g { background: #228b22; }
-        .c { background: #7f8c8d; } /* Color Incoloro */
+        .mana-val {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .w {
+            background: #f9faf4;
+        }
+
+        .u {
+            background: #0e68ab;
+        }
+
+        .b {
+            background: #151110;
+        }
+
+        .r {
+            background: #d32f2f;
+        }
+
+        .g {
+            background: #228b22;
+        }
+
+        .c {
+            background: #7f8c8d;
+        }
+
+        /* Color Incoloro */
         .storm {
             background: #8e44ad;
             border: none;
@@ -215,11 +242,67 @@
             gap: 4px;
         }
 
-        .c1 { background: #2d5a27; } .c2 { background: #a03023; } .c3 { background: #20547c; }
-        .c4 { background: #3d3d3d; } .c5 { background: #b7950b; } .c6 { background: #117a65; }
-        .c7 { background: #6c3483; } .c8 { background: #a04000; } .c9 { background: #2874a6; }
-        .c10 { background: #1e8449; } .c11 { background: #922b21; } .c12 { background: #d4ac0d; color: black; text-shadow: none; }
-        .c13 { background: #1a5276; } .c14 { background: #7b241c; } .c15 { background: #1d8348; }
+        .c1 {
+            background: #2d5a27;
+        }
+
+        .c2 {
+            background: #a03023;
+        }
+
+        .c3 {
+            background: #20547c;
+        }
+
+        .c4 {
+            background: #3d3d3d;
+        }
+
+        .c5 {
+            background: #b7950b;
+        }
+
+        .c6 {
+            background: #117a65;
+        }
+
+        .c7 {
+            background: #6c3483;
+        }
+
+        .c8 {
+            background: #a04000;
+        }
+
+        .c9 {
+            background: #2874a6;
+        }
+
+        .c10 {
+            background: #1e8449;
+        }
+
+        .c11 {
+            background: #922b21;
+        }
+
+        .c12 {
+            background: #d4ac0d;
+            color: black;
+            text-shadow: none;
+        }
+
+        .c13 {
+            background: #1a5276;
+        }
+
+        .c14 {
+            background: #7b241c;
+        }
+
+        .c15 {
+            background: #1d8348;
+        }
 
         .reset-btn {
             background: #d4af37;
@@ -239,9 +322,17 @@
         }
 
         @keyframes parpadeo {
-            0% { background: rgba(0, 0, 0, 0.85); }
-            50% { background: rgba(100, 0, 0, 0.7); }
-            100% { background: rgba(0, 0, 0, 0.85); }
+            0% {
+                background: rgba(0, 0, 0, 0.85);
+            }
+
+            50% {
+                background: rgba(100, 0, 0, 0.7);
+            }
+
+            100% {
+                background: rgba(0, 0, 0, 0.85);
+            }
         }
 
         .monarca-active {
@@ -252,7 +343,8 @@
         #custom-modal {
             display: none;
             position: fixed;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(15, 15, 15, 0.95);
             border: 2px solid #d4af37;
@@ -260,17 +352,21 @@
             padding: 25px;
             z-index: 1000;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.3);
             min-width: 250px;
         }
+
         #modal-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             z-index: 999;
         }
+
         .modal-btn {
             background: #d4af37;
             color: black;
@@ -281,7 +377,11 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .modal-btn.cancel { background: #555; color: white; }
+
+        .modal-btn.cancel {
+            background: #555;
+            color: white;
+        }
     </style>
 </head>
 
@@ -296,10 +396,10 @@
         <div style="text-align:center;">
             <img src="logo.png" alt="Logo" style="max-width: 200px; width: 100%;">
         </div>
-    
+
         <div class="players-container" id="player-area"></div>
-    
-        <divclass="player-controls">
+
+        <div class="player-controls">
             <div class="side-icon" onclick="rollD20()">🎲</div>
             <div>
                 <button class="btn-trans" onclick="removePlayer()">-</button>
@@ -307,46 +407,60 @@
                 <button class="btn-trans" onclick="addPlayer()">+</button>
             </div>
             <div class="side-icon" id="day-night-toggle" onclick="toggleDayNight()">☀️</div>
-        </div>
+    </div>
 
-        <div class="mana-section">
-            <div class="mana-pool">
-                <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;"><div class="mana-btn w"></div><span class="mana-val" id="mw">0</span></div>
-                <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;"><div class="mana-btn u"></div><span class="mana-val" id="mu">0</span></div>
-                <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;"><div class="mana-btn b"></div><span class="mana-val" id="mb">0</span></div>
-                <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;"><div class="mana-btn r"></div><span class="mana-val" id="mr">0</span></div>
-                <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;"><div class="mana-btn g"></div><span class="mana-val" id="mg">0</span></div>
-                <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;"><div class="mana-btn c"></div><span class="mana-val" id="mc">0</span></div>
-                <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;"><div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span></div>
+    <div class="mana-section">
+        <div class="mana-pool">
+            <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;">
+                <div class="mana-btn w"></div><span class="mana-val" id="mw">0</span>
+            </div>
+            <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;">
+                <div class="mana-btn u"></div><span class="mana-val" id="mu">0</span>
+            </div>
+            <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;">
+                <div class="mana-btn b"></div><span class="mana-val" id="mb">0</span>
+            </div>
+            <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;">
+                <div class="mana-btn r"></div><span class="mana-val" id="mr">0</span>
+            </div>
+            <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;">
+                <div class="mana-btn g"></div><span class="mana-val" id="mg">0</span>
+            </div>
+            <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;">
+                <div class="mana-btn c"></div><span class="mana-val" id="mc">0</span>
+            </div>
+            <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;">
+                <div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span>
             </div>
         </div>
+    </div>
 
-        <div class="sound-grid">
-            <button class="btn-magic c1" onclick="play('rugido')"><span>🦖</span> Criatura</button>
-            <button class="btn-magic c2" onclick="play('fuego')"><span>🔥</span> Fuego</button>
-            <button class="btn-magic c3" onclick="play('counter')"><span>⛔</span> Counter</button>
-            <button class="btn-magic c4" onclick="play('muerte')"><span>💀</span> Morir</button>
-            <button class="btn-magic c5" onclick="play('barremesas')"><span>✨</span> Barrer</button>
-            <button class="btn-magic c6" onclick="play('proliferar')"><span>🧪</span> Proliferar</button>
-            <button class="btn-magic c7" onclick="play('cementerio')"><span>⚰️</span> Cementerio</button>
-            <button class="btn-magic c8" onclick="play('mano')"><span>🃏</span> Devolver</button>
-            <button class="btn-magic c9" onclick="play('buscar')"><span>🔍</span> Buscar</button>
-            <button class="btn-magic c10" onclick="play('lobos')"><span>🐺</span> Lobos</button>
-            <button class="btn-magic c11" onclick="play('turno')"><span>⏳</span> Turno</button>
-            <button class="btn-magic c12" onclick="play('curar')"><span>💖</span> Curar</button>
-            <button class="btn-magic c13" onclick="play('zombies')"><span>🧟</span> Zombies</button>
-            <button class="btn-magic c14" onclick="play('cry')"><span>😢</span> Cry</button>
-            <button class="btn-magic c15" onclick="play('barajar')"><span>🔄</span> Barajar</button>
-        </div>
+    <div class="sound-grid">
+        <button class="btn-magic c1" onclick="play('rugido')"><span>🦖</span> Criatura</button>
+        <button class="btn-magic c2" onclick="play('fuego')"><span>🔥</span> Fuego</button>
+        <button class="btn-magic c3" onclick="play('counter')"><span>⛔</span> Counter</button>
+        <button class="btn-magic c4" onclick="play('muerte')"><span>💀</span> Morir</button>
+        <button class="btn-magic c5" onclick="play('barremesas')"><span>✨</span> Barrer</button>
+        <button class="btn-magic c6" onclick="play('proliferar')"><span>🧪</span> Proliferar</button>
+        <button class="btn-magic c7" onclick="play('cementerio')"><span>⚰️</span> Cementerio</button>
+        <button class="btn-magic c8" onclick="play('mano')"><span>🃏</span> Devolver</button>
+        <button class="btn-magic c9" onclick="play('buscar')"><span>🔍</span> Buscar</button>
+        <button class="btn-magic c10" onclick="play('lobos')"><span>🐺</span> Lobos</button>
+        <button class="btn-magic c11" onclick="play('turno')"><span>⏳</span> Turno</button>
+        <button class="btn-magic c12" onclick="play('curar')"><span>💖</span> Curar</button>
+        <button class="btn-magic c13" onclick="play('zombies')"><span>🧟</span> Zombies</button>
+        <button class="btn-magic c14" onclick="play('cry')"><span>😢</span> Cry</button>
+        <button class="btn-magic c15" onclick="play('barajar')"><span>🔄</span> Barajar</button>
+    </div>
 
-        <button class="reset-btn" onclick="resetGame()">REINICIAR PARTIDA</button>
+    <button class="reset-btn" onclick="resetGame()">REINICIAR PARTIDA</button>
     </div>
 
     <script>
         let players = [
-        { name: "TATO", life: 40, cmd: 0, poison: 0, monarca: false },
-        { name: "CARLOS", life: 40, cmd: 0, poison: 0, monarca: false },
-        { name: "SIMÓN", life: 40, cmd: 0, poison: 0, monarca: false }
+            { name: "TATO", life: 40, cmd: 0, poison: 0, monarca: false },
+            { name: "CARLOS", life: 40, cmd: 0, poison: 0, monarca: false },
+            { name: "SIMÓN", life: 40, cmd: 0, poison: 0, monarca: false }
         ];
         let mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
         let storm = 0;
@@ -400,7 +514,7 @@
             document.getElementById('m' + color).innerText = mana[color];
             if (v > 0) {
                 const sounds = {
-                    'w': 'mana_white', 'u': 'mana_blue', 'b': 'mana_black', 
+                    'w': 'mana_white', 'u': 'mana_blue', 'b': 'mana_black',
                     'r': 'mana_red', 'g': 'mana_green', 'c': 'mana_colorless'
                 };
                 play(sounds[color]);
@@ -421,12 +535,12 @@
                 btnOk.className = 'modal-btn';
                 btnOk.innerText = 'SÍ, SEGURO';
                 btnOk.onclick = () => { overlay.style.display = modal.style.display = 'none'; onConfirm(); };
-                
+
                 const btnCancel = document.createElement('button');
                 btnCancel.className = 'modal-btn cancel';
                 btnCancel.innerText = 'NO';
                 btnCancel.onclick = () => { overlay.style.display = modal.style.display = 'none'; };
-                
+
                 buttonsEl.appendChild(btnCancel);
                 buttonsEl.appendChild(btnOk);
             } else {
@@ -451,15 +565,15 @@
         function addPlayer() { if (players.length < 4) { players.push({ name: "JUGADOR " + (players.length + 1), life: 40, cmd: 0, poison: 0, monarca: false }); updateUI(); } }
         function removePlayer() { if (players.length > 1) { players.pop(); updateUI(); } }
         function play(s) { new Audio(s + '.mp3').play().catch(() => { }); }
-        
+
         function resetGame() {
             showModal("¿Reiniciar partida, Simón? ¿O te has tomado demasiadas rubias?", true, () => {
                 play('reset');
                 players.forEach(p => { p.life = 40; p.cmd = 0; p.poison = 0; p.monarca = false; });
-                mana = {w:0, u:0, b:0, r:0, g:0, c:0};
+                mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
                 storm = 0; isDay = true;
                 document.getElementById('day-night-toggle').innerText = "☀️";
-                Object.keys(mana).forEach(c => document.getElementById('m'+c).innerText = '0');
+                Object.keys(mana).forEach(c => document.getElementById('m' + c).innerText = '0');
                 document.getElementById('st-val').innerText = '0';
                 const starter = Math.floor(Math.random() * players.length);
                 setTimeout(() => { showModal("¡Reiniciado! Empieza: " + players[starter].name); updateUI(); }, 300);
@@ -475,4 +589,5 @@
         });
     </script>
 </body>
+
 </html>
