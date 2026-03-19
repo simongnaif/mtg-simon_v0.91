@@ -701,6 +701,7 @@
             showModal("¿Reiniciar partida, Simón? ¿O te has tomado demasiadas rubias?", true, () => {
                 play('reset');
                 players.forEach(p => { p.life = 40; p.cmd = {}; p.poison = 0; p.monarca = false; p.commanderDeaths = 0; });
+                initCommanderDamage();
                 mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
                 storm = 0; isDay = true;
                 document.getElementById('day-night-toggle').innerText = "☀️";
@@ -709,8 +710,6 @@
                 const starter = Math.floor(Math.random() * players.length);
                 setTimeout(() => { showModal("¡Reiniciado! Empieza: " + players[starter].name); updateUI(); }, 300);
             });
-
-            initCommanderDamage();
         }
 
         updateUI();
