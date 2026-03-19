@@ -316,6 +316,36 @@
             margin-top: 10px;
         }
 
+        .commander-section {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 8px;
+            gap: 6px;
+        }
+
+        .cmd-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 9px;
+        }
+
+        .cmd-name {
+            margin-bottom: 3px;
+            opacity: 0.8;
+        }
+
+        .cmd-btn {
+            background: #222;
+            border: 1px solid #d4af37;
+            border-radius: 6px;
+            padding: 4px 6px;
+            min-width: 24px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .peligro {
             animation: parpadeo 1.5s infinite;
             border-color: #ff4444 !important;
@@ -407,83 +437,128 @@
                 <button class="btn-trans" onclick="addPlayer()">+</button>
             </div>
             <div class="side-icon" id="day-night-toggle" onclick="toggleDayNight()">☀️</div>
-    </div>
+        </div>
 
-    <div class="mana-section">
-        <div class="mana-pool">
-            <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;">
-                <div class="mana-btn w"></div><span class="mana-val" id="mw">0</span>
-            </div>
-            <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;">
-                <div class="mana-btn u"></div><span class="mana-val" id="mu">0</span>
-            </div>
-            <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;">
-                <div class="mana-btn b"></div><span class="mana-val" id="mb">0</span>
-            </div>
-            <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;">
-                <div class="mana-btn r"></div><span class="mana-val" id="mr">0</span>
-            </div>
-            <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;">
-                <div class="mana-btn g"></div><span class="mana-val" id="mg">0</span>
-            </div>
-            <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;">
-                <div class="mana-btn c"></div><span class="mana-val" id="mc">0</span>
-            </div>
-            <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;">
-                <div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span>
+        <div class="mana-section">
+            <div class="mana-pool">
+                <div class="mana-item" onclick="changeMana('w',1)" oncontextmenu="changeMana('w',-1);return false;">
+                    <div class="mana-btn w"></div><span class="mana-val" id="mw">0</span>
+                </div>
+                <div class="mana-item" onclick="changeMana('u',1)" oncontextmenu="changeMana('u',-1);return false;">
+                    <div class="mana-btn u"></div><span class="mana-val" id="mu">0</span>
+                </div>
+                <div class="mana-item" onclick="changeMana('b',1)" oncontextmenu="changeMana('b',-1);return false;">
+                    <div class="mana-btn b"></div><span class="mana-val" id="mb">0</span>
+                </div>
+                <div class="mana-item" onclick="changeMana('r',1)" oncontextmenu="changeMana('r',-1);return false;">
+                    <div class="mana-btn r"></div><span class="mana-val" id="mr">0</span>
+                </div>
+                <div class="mana-item" onclick="changeMana('g',1)" oncontextmenu="changeMana('g',-1);return false;">
+                    <div class="mana-btn g"></div><span class="mana-val" id="mg">0</span>
+                </div>
+                <div class="mana-item" onclick="changeMana('c',1)" oncontextmenu="changeMana('c',-1);return false;">
+                    <div class="mana-btn c"></div><span class="mana-val" id="mc">0</span>
+                </div>
+                <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;">
+                    <div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="sound-grid">
-        <button class="btn-magic c1" onclick="play('rugido')"><span>🦖</span> Criatura</button>
-        <button class="btn-magic c2" onclick="play('fuego')"><span>🔥</span> Fuego</button>
-        <button class="btn-magic c3" onclick="play('counter')"><span>⛔</span> Counter</button>
-        <button class="btn-magic c4" onclick="play('muerte')"><span>💀</span> Morir</button>
-        <button class="btn-magic c5" onclick="play('barremesas')"><span>✨</span> Barrer</button>
-        <button class="btn-magic c6" onclick="play('proliferar')"><span>🧪</span> Proliferar</button>
-        <button class="btn-magic c7" onclick="play('cementerio')"><span>⚰️</span> Cementerio</button>
-        <button class="btn-magic c8" onclick="play('mano')"><span>🃏</span> Devolver</button>
-        <button class="btn-magic c9" onclick="play('buscar')"><span>🔍</span> Buscar</button>
-        <button class="btn-magic c10" onclick="play('lobos')"><span>🐺</span> Lobos</button>
-        <button class="btn-magic c11" onclick="play('turno')"><span>⏳</span> Turno</button>
-        <button class="btn-magic c12" onclick="play('curar')"><span>💖</span> Curar</button>
-        <button class="btn-magic c13" onclick="play('zombies')"><span>🧟</span> Zombies</button>
-        <button class="btn-magic c14" onclick="play('cry')"><span>😢</span> Cry</button>
-        <button class="btn-magic c15" onclick="play('barajar')"><span>🔄</span> Barajar</button>
-    </div>
+        <div class="sound-grid">
+            <button class="btn-magic c1" onclick="play('rugido')"><span>🦖</span> Criatura</button>
+            <button class="btn-magic c2" onclick="play('fuego')"><span>🔥</span> Fuego</button>
+            <button class="btn-magic c3" onclick="play('counter')"><span>⛔</span> Counter</button>
+            <button class="btn-magic c4" onclick="play('muerte')"><span>💀</span> Morir</button>
+            <button class="btn-magic c5" onclick="play('barremesas')"><span>✨</span> Barrer</button>
+            <button class="btn-magic c6" onclick="play('proliferar')"><span>🧪</span> Proliferar</button>
+            <button class="btn-magic c7" onclick="play('cementerio')"><span>⚰️</span> Cementerio</button>
+            <button class="btn-magic c8" onclick="play('mano')"><span>🃏</span> Devolver</button>
+            <button class="btn-magic c9" onclick="play('buscar')"><span>🔍</span> Buscar</button>
+            <button class="btn-magic c10" onclick="play('lobos')"><span>🐺</span> Lobos</button>
+            <button class="btn-magic c11" onclick="play('turno')"><span>⏳</span> Turno</button>
+            <button class="btn-magic c12" onclick="play('curar')"><span>💖</span> Curar</button>
+            <button class="btn-magic c13" onclick="play('zombies')"><span>🧟</span> Zombies</button>
+            <button class="btn-magic c14" onclick="play('cry')"><span>😢</span> Cry</button>
+            <button class="btn-magic c15" onclick="play('barajar')"><span>🔄</span> Barajar</button>
+        </div>
 
-    <button class="reset-btn" onclick="resetGame()">REINICIAR PARTIDA</button>
+        <button class="reset-btn" onclick="resetGame()">REINICIAR PARTIDA</button>
     </div>
 
     <script>
         let players = [
-            { name: "TATO", life: 40, cmd: 0, poison: 0, monarca: false },
-            { name: "CARLOS", life: 40, cmd: 0, poison: 0, monarca: false },
-            { name: "SIMÓN", life: 40, cmd: 0, poison: 0, monarca: false }
+            { name: "TATO", life: 40, cmd: {}, commanderDeaths: 0, poison: 0, monarca: false },
+            { name: "CARLOS", life: 40, cmd: {}, commanderDeaths: 0, poison: 0, monarca: false },
+            { name: "SIMÓN", life: 40, cmd: {}, commanderDeaths: 0, poison: 0, monarca: false }
         ];
+
+        initCommanderDamage();
+
         let mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
         let storm = 0;
         let isDay = true;
 
         function updateUI() {
             const area = document.getElementById('player-area');
+
             area.innerHTML = players.map((p, i) => `
-                <div class="player-card ${p.life <= 10 ? 'peligro' : ''} ${p.monarca ? 'monarca-active' : ''}">
-                    <input class="player-name" value="${p.name}" onchange="updateName(${i}, this.value)">
-                    <span class="life-value">${p.life}</span>
-                    <div class="life-controls">
-                        <button class="btn-life" onclick="changeLife(${i},-5)">-5</button>
-                        <button class="btn-life" onclick="changeLife(${i},-1)">-1</button>
-                        <button class="btn-life" onclick="changeLife(${i},1)">+1</button>
-                        <button class="btn-life" onclick="changeLife(${i},5)">+5</button>
+        <div class="player-card ${p.life <= 10 ? 'peligro' : ''} ${p.monarca ? 'monarca-active' : ''}">
+            
+            <input class="player-name" value="${p.name}" onchange="updateName(${i}, this.value)">
+            
+            <span class="life-value">${p.life}</span>
+
+            <div class="life-controls">
+                <button class="btn-life" onclick="changeLife(${i},-5)">-5</button>
+                <button class="btn-life" onclick="changeLife(${i},-1)">-1</button>
+                <button class="btn-life" onclick="changeLife(${i},1)">+1</button>
+                <button class="btn-life" onclick="changeLife(${i},5)">+5</button>
+            </div>
+
+            <div class="extra-counters">
+                <div class="counter-box" 
+                    onclick="changeExtra(${i},'commanderDeaths',1)" 
+                    oncontextmenu="changeExtra(${i},'commanderDeaths',-1);return false;">
+                    <span>🎖️</span>${p.commanderDeaths}
+                </div>
+
+                <div class="counter-box" 
+                    onclick="changeExtra(${i},'poison',1)" 
+                    oncontextmenu="changeExtra(${i},'poison',-1);return false;">
+                    <span>☣️</span>${p.poison}
+                </div>
+
+                <div class="counter-box" onclick="setMonarca(${i})">
+                    <span>👑</span>
+                </div>
+            </div>
+
+            <div class="commander-section">
+                ${Object.keys(p.cmd).map(j => `
+                    <div class="cmd-player">
+                        <div class="cmd-name">${players[j].name}</div>
+                        <div class="cmd-btn" onclick="cycleCommander(${i},${j})">
+                            ${p.cmd[j] >= 21 ? '💀' : p.cmd[j]}
+                        </div>
                     </div>
-                    <div class="extra-counters">
-                        <div class="counter-box" onclick="changeExtra(${i},'cmd',1)" oncontextmenu="changeExtra(${i},'cmd',-1);return false;"><span>🎖️</span>${p.cmd}</div>
-                        <div class="counter-box" onclick="changeExtra(${i},'poison',1)" oncontextmenu="changeExtra(${i},'poison',-1);return false;"><span>☣️</span>${p.poison}</div>
-                        <div class="counter-box" onclick="setMonarca(${i})"><span>👑</span></div>
-                    </div>
-                </div>`).join('');
+                `).join('')}
+            </div>
+
+        </div>
+    `).join('');
+        }
+
+        function changeCommander(target, source, value) {
+            players[target].cmd[source] = Math.max(0, players[target].cmd[source] + value);
+            play(value > 0 ? 'cmd' : 'click');
+
+            // 💀 muerte automática a 21
+            if (players[target].cmd[source] >= 21) {
+                showModal(players[target].name + " ha perdido por daño de comandante de " + players[source].name);
+            }
+
+            updateUI();
         }
 
         function updateName(i, val) { players[i].name = val.toUpperCase(); }
@@ -493,6 +568,36 @@
             else if (v === -5) play('minus10');
             else if (v > 0) play('plus1');
             else play('minus1');
+            updateUI();
+        }
+
+        function initCommanderDamage() {
+            players.forEach((p, i) => {
+                p.cmd = {};
+                players.forEach((_, j) => {
+                    if (i !== j) {
+                        p.cmd[j] = 0;
+                    }
+                });
+            });
+        }
+
+        function cycleCommander(target, source) {
+            let val = players[target].cmd[source] || 0;
+
+            val++;
+
+            if (val > 21) val = 0;
+
+            players[target].cmd[source] = val;
+
+            if (val === 21) {
+                play('muerte');
+                showModal(players[target].name + " ha perdido por comandante de " + players[source].name);
+            } else {
+                play('cmd');
+            }
+
             updateUI();
         }
 
@@ -562,14 +667,34 @@
             setTimeout(() => { showModal("🎲 El destino dice: " + res); }, 100);
         }
         function setMonarca(i) { players.forEach((p, idx) => p.monarca = (idx === i && !p.monarca)); play('curar'); updateUI(); }
-        function addPlayer() { if (players.length < 4) { players.push({ name: "JUGADOR " + (players.length + 1), life: 40, cmd: 0, poison: 0, monarca: false }); updateUI(); } }
-        function removePlayer() { if (players.length > 1) { players.pop(); updateUI(); } }
+        function addPlayer() {
+            if (players.length < 4) {
+                players.push({
+                    name: "JUGADOR " + (players.length + 1),
+                    life: 40,
+                    cmd: {},
+                    commanderDeaths: 0,
+                    poison: 0,
+                    monarca: false
+                });
+                initCommanderDamage();
+                updateUI();
+            }
+        }
+
+        function removePlayer() {
+            if (players.length > 1) {
+                players.pop();
+                initCommanderDamage();
+                updateUI();
+            }
+        }
         function play(s) { new Audio(s + '.mp3').play().catch(() => { }); }
 
         function resetGame() {
             showModal("¿Reiniciar partida, Simón? ¿O te has tomado demasiadas rubias?", true, () => {
                 play('reset');
-                players.forEach(p => { p.life = 40; p.cmd = 0; p.poison = 0; p.monarca = false; });
+                players.forEach(p => { p.life = 40; p.cmd = {}; p.poison = 0; p.monarca = false; p.commanderDeaths = 0; });
                 mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
                 storm = 0; isDay = true;
                 document.getElementById('day-night-toggle').innerText = "☀️";
@@ -578,6 +703,8 @@
                 const starter = Math.floor(Math.random() * players.length);
                 setTimeout(() => { showModal("¡Reiniciado! Empieza: " + players[starter].name); updateUI(); }, 300);
             });
+
+            initCommanderDamage();
         }
 
         updateUI();
