@@ -592,18 +592,24 @@
             players[target].cmd[source] = val;
 
             if (val === 21) {
-                play('muerte');
+                play('commander_kill');
                 showModal(players[target].name + " ha perdido por comandante de " + players[source].name);
             } else {
-                play('cmd');
+                play('commander_hit');
             }
 
             updateUI();
         }
 
         function changeExtra(i, type, v) {
-            if (v > 0) play(type === 'cmd' ? 'cmd' : 'poison');
+            const sounds = {
+                commanderDeaths: 'cmd',
+                poison: 'poison'
+            };
+
+            if (v > 0) play(sounds[type] || 'click');
             else play('click');
+
             players[i][type] = Math.max(0, players[i][type] + v);
             updateUI();
         }
