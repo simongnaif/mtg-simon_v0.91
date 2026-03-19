@@ -293,11 +293,13 @@
     </div>
     <div class="overlay"></div>
     <div class="main-container">
-        <h2 style="color: #d4af37; text-align: center; letter-spacing: 2px; margin: 0;">MTG SIMÓN PRO</h2>
-
+        <div style="text-align:center;">
+            <img src="logo.png" alt="Logo" style="max-width: 200px; width: 100%;">
+        </div>
+    
         <div class="players-container" id="player-area"></div>
-
-        <div class="player-controls">
+    
+        <divclass="player-controls">
             <div class="side-icon" onclick="rollD20()">🎲</div>
             <div>
                 <button class="btn-trans" onclick="removePlayer()">-</button>
@@ -342,8 +344,9 @@
 
     <script>
         let players = [
-            { name: "JUGADOR 1", life: 40, cmd: 0, poison: 0, monarca: false },
-            { name: "JUGADOR 2", life: 40, cmd: 0, poison: 0, monarca: false }
+        { name: "TATO", life: 40, cmd: 0, poison: 0, monarca: false },
+        { name: "CARLOS", life: 40, cmd: 0, poison: 0, monarca: false },
+        { name: "SIMÓN", life: 40, cmd: 0, poison: 0, monarca: false }
         ];
         let mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
         let storm = 0;
@@ -356,10 +359,10 @@
                     <input class="player-name" value="${p.name}" onchange="updateName(${i}, this.value)">
                     <span class="life-value">${p.life}</span>
                     <div class="life-controls">
-                        <button class="btn-life" onclick="changeLife(${i},-10)">-10</button>
+                        <button class="btn-life" onclick="changeLife(${i},-5)">-5</button>
                         <button class="btn-life" onclick="changeLife(${i},-1)">-1</button>
                         <button class="btn-life" onclick="changeLife(${i},1)">+1</button>
-                        <button class="btn-life" onclick="changeLife(${i},10)">+10</button>
+                        <button class="btn-life" onclick="changeLife(${i},5)">+5</button>
                     </div>
                     <div class="extra-counters">
                         <div class="counter-box" onclick="changeExtra(${i},'cmd',1)" oncontextmenu="changeExtra(${i},'cmd',-1);return false;"><span>🎖️</span>${p.cmd}</div>
@@ -372,8 +375,8 @@
         function updateName(i, val) { players[i].name = val.toUpperCase(); }
         function changeLife(i, v) {
             players[i].life += v;
-            if (v === 10) play('plus10');
-            else if (v === -10) play('minus10');
+            if (v === 5) play('plus10');
+            else if (v === -5) play('minus10');
             else if (v > 0) play('plus1');
             else play('minus1');
             updateUI();
