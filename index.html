@@ -76,7 +76,7 @@
 
         .life-controls {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 3px;
             margin-bottom: 10px;
             padding: 0 4px;
@@ -487,6 +487,8 @@
     </div>
 
     <script>
+        const defaultNames = ["TATO", "CARLOS", "SIMÓN", "FRANCIS", "JESÚS", "SANTI"];
+
         let players = [
             { name: "TATO", life: 40, cmd: {}, commanderDeaths: 0, poison: 0, monarca: false },
             { name: "CARLOS", life: 40, cmd: {}, commanderDeaths: 0, poison: 0, monarca: false },
@@ -501,6 +503,16 @@
 
         function updateUI() {
             const area = document.getElementById('player-area');
+
+            if (players.length === 1) {
+                area.style.gridTemplateColumns = "1fr";
+            } else if (players.length === 2) {
+                area.style.gridTemplateColumns = "repeat(2, 1fr)";
+            } else if (players.length === 3) {
+                area.style.gridTemplateColumns = "repeat(3, 1fr)";
+            } else {
+                area.style.gridTemplateColumns = "repeat(2, 1fr)";
+            }
 
             area.innerHTML = players.map((p, i) => `
         <div class="player-card ${p.life <= 10 ? 'peligro' : ''} ${p.monarca ? 'monarca-active' : ''}">
@@ -674,9 +686,10 @@
         }
         function setMonarca(i) { players.forEach((p, idx) => p.monarca = (idx === i && !p.monarca)); play('curar'); updateUI(); }
         function addPlayer() {
-            if (players.length < 4) {
+            if (players.length < 6) {
+                const newIndex = players.length;
                 players.push({
-                    name: "JUGADOR " + (players.length + 1),
+                    name: defaultNames[newIndex] || ("JUGADOR " + (newIndex + 1)),
                     life: 40,
                     cmd: {},
                     commanderDeaths: 0,
@@ -689,7 +702,7 @@
         }
 
         function removePlayer() {
-            if (players.length > 1) {
+            if (players.length > 2) {
                 players.pop();
                 initCommanderDamage();
                 updateUI();
