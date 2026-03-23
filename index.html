@@ -424,7 +424,7 @@
     <div class="overlay"></div>
     <div class="main-container">
         <div style="text-align:center;">
-            <img src="logo.png" alt="Logo" style="max-width: 200px; width: 100%;">
+            <img src="logo.png" alt="Logo" style="max-width: 420px; width: 100%;">
         </div>
 
         <div class="players-container" id="player-area"></div>
@@ -461,6 +461,10 @@
                 </div>
                 <div class="mana-item" onclick="changeStorm(1)" oncontextmenu="changeStorm(-1);return false;">
                     <div class="mana-btn storm">⛈️</div><span class="mana-val" id="st-val">0</span>
+                </div>
+                <div class="mana-item" onclick="resetManaStorm()">
+                    <div class="mana-btn" style="background:#444; display:flex; align-items:center; justify-content:center;">↺</div>
+                    <span class="mana-val">0</span>
                 </div>
             </div>
         </div>
@@ -550,7 +554,13 @@
                 ${Object.keys(p.cmd).map(j => `
                     <div class="cmd-player">
                         <div class="cmd-name">${players[j].name}</div>
-                        <div class="cmd-btn" onclick="cycleCommander(${i},${j})">
+                        <div class="cmd-btn"
+                            onmousedown="startCmdChange(${i},${j},-1)"
+                            onmouseup="stopCmdChange()"
+                            onmouseleave="stopCmdChange()"
+                            ontouchstart="startCmdChange(${i},${j},-1)"
+                            ontouchend="stopCmdChange()"
+                            onclick="cycleCommander(${i},${j})">
                             ${p.cmd[j] >= 21 ? '💀' : p.cmd[j]}
                         </div>
                     </div>
@@ -613,6 +623,18 @@
             updateUI();
         }
 
+        let cmdInterval = null;
+
+        function startCmdChange(target, source, value) {
+            cmdInterval = setInterval(() => {
+                changeCommander(target, source, value);
+            }, 150); // velocidad de bajada
+        }
+
+        function stopCmdChange() {
+            clearInterval(cmdInterval);
+        }
+
         function changeExtra(i, type, v) {
             const sounds = {
                 commanderDeaths: 'cmd',
@@ -642,6 +664,19 @@
                 };
                 play(sounds[color]);
             } else play('click');
+        }
+
+        function resetManaStorm() {
+            mana = { w: 0, u: 0, b: 0, r: 0, g: 0, c: 0 };
+            storm = 0;
+
+            Object.keys(mana).forEach(c => {
+                document.getElementById('m' + c).innerText = '0';
+            });
+
+            document.getElementById('st-val').innerText = '0';
+
+            play('reset_mana');
         }
 
         function showModal(text, confirmMode = false, onConfirm = null) {
